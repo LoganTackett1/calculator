@@ -118,3 +118,10 @@ decimal.addEventListener('click',()=>{
     updateDisplay();
     }
 })
+
+const btnSign = document.querySelector('.signChange');
+
+btnSign.addEventListener('click',()=>{
+    displayNum = -displayNum;
+    updateDisplay();
+});
