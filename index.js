@@ -26,20 +26,19 @@ numInput.forEach(node => {
     node.addEventListener('click',item => {
         if (operation === null) {
             if (displayNum === 0 || displayNum === "0") {
-            currNum = Number(node.textContent);
-            displayNum = currNum;
+            temp = Number(node.textContent);
+            displayNum = temp;
             } else {
-                currNum = Number(`${displayNum}${Number(node.textContent)}`);
-                displayNum = currNum;
+                temp = Number(`${displayNum}${Number(node.textContent)}`);
+                displayNum = temp;
             }
         updateDisplay();
         } else {
             if (toggle === true) {
-                temp = Number(node.textContent);
-                displayNum = temp;
+                temp = displayNum;
+                displayNum = Number(node.textContent);
             } else {
-                    temp = Number(`${displayNum}${Number(node.textContent)}`);
-                    displayNum = temp;
+                    displayNum = Number(`${displayNum}${Number(node.textContent)}`);
                 }
             toggle = false;
             updateDisplay();
@@ -53,11 +52,12 @@ operations.forEach(node => {
     node.addEventListener('click', item => {
         toggle = true;
         if (!(operation === null)) {
-            displayNum = operate(temp);
-            currNum = displayNum;
+            currNum = temp;
+            currNum = operate(displayNum);
+            displayNum = currNum;
             updateDisplay();
         }
-        temp = 0;
+        temp = displayNum;
         if (node.textContent === "+") {
             operation = "add";
         }
@@ -97,21 +97,26 @@ const equals = document.querySelector('.equals')
 
 equals.addEventListener('click',() => {
     if (!(operation === null)) {
-        displayNum = operate(temp);
-        currNum = displayNum;
+        currNum = temp;
+        currNum = operate(displayNum);
+        displayNum = currNum;
         updateDisplay();
     }
     temp = 0;
     operation = null;
     decimalOn = false;
-    displayNum = currNum;
-    updateDisplay();
 })
 
 const decimal = document.querySelector('.decimal');
 let decimalOn = false;
 
 decimal.addEventListener('click',()=>{
+    if (toggle === true) {
+        displayNum = "0.";
+        decimalOn = true;
+        updateDisplay();
+        toggle = false;
+    }
     if (decimalOn === false) {
     displayNum = `${displayNum}.`;
     decimalOn = true;
