@@ -16,6 +16,7 @@ btnAC.addEventListener('click',() => {
     operation = null;
     decimalOn = false;
     currNum = 0;
+    temp = 0;
     displayNum = 0;
     updateDisplay();
 });
@@ -29,17 +30,34 @@ numInput.forEach(node => {
             temp = Number(node.textContent);
             displayNum = temp;
             } else {
+                if (etoggle === true) {
+                    temp = 0;
+                    displayNum = Number(node.textContent);
+                    etoggle = false;
+                } else if (toggle === true) {
+                    displayNum = Number(node.textContent);
+                    toggle = false;
+                } else if (decimalOn === true) {
+                displayNum = (`${displayNum}${Number(node.textContent)}`);
+                } else {   
                 temp = Number(`${displayNum}${Number(node.textContent)}`);
                 displayNum = temp;
+                }
             }
         updateDisplay();
+        etoggle = false;
         } else {
             if (toggle === true) {
                 temp = displayNum;
                 displayNum = Number(node.textContent);
+            } else if (etoggle === true) {
+                displayNum = Number(node.textContent);
+                etoggle = false;
+            } else if (decimalOn === true) {
+                displayNum = (`${displayNum}${Number(node.textContent)}`);
             } else {
                     displayNum = Number(`${displayNum}${Number(node.textContent)}`);
-                }
+            }
             toggle = false;
             updateDisplay();
         }
@@ -54,7 +72,7 @@ operations.forEach(node => {
         if (!(operation === null)) {
             currNum = temp;
             currNum = operate(displayNum);
-            displayNum = currNum;
+            displayNum = roundFive(currNum);
             updateDisplay();
         }
         temp = displayNum;
@@ -77,34 +95,34 @@ operations.forEach(node => {
 function operate (num) {
     if (operation === "add") {
         operation = null;
-        return currNum + num;
+        return Number(currNum) + Number(num);
     }
     if (operation === "subtract") {
         operation = null;
-        return currNum - num;
+        return Number(currNum) - Number(num);
     }
     if (operation === "multiply") {
         operation = null;
-        return currNum * num;
+        return Number(currNum) * Number(num);
     }
     if (operation === "divide") {
         operation = null;
-        return currNum / num;
+        return Number(currNum) / Number(num);
     }
 }
 
-const equals = document.querySelector('.equals') 
+const equals = document.querySelector('.equals');
+let etoggle = false;
 
 equals.addEventListener('click',() => {
     if (!(operation === null)) {
         currNum = temp;
         currNum = operate(displayNum);
-        displayNum = currNum;
+        displayNum = roundFive(currNum);
         updateDisplay();
+        etoggle = true;
+        decimalOn = false;
     }
-    temp = 0;
-    operation = null;
-    decimalOn = false;
 })
 
 const decimal = document.querySelector('.decimal');
@@ -121,6 +139,7 @@ decimal.addEventListener('click',()=>{
     displayNum = `${displayNum}.`;
     decimalOn = true;
     updateDisplay();
+    etoggle = false;
     }
 })
 
@@ -130,3 +149,15 @@ btnSign.addEventListener('click',()=>{
     displayNum = -displayNum;
     updateDisplay();
 });
+
+const btnPercent = document.querySelector('.toPercent')
+
+btnPercent.addEventListener('click',() => {
+    displayNum = displayNum/100;
+    etoggle = true;
+    updateDisplay();
+});
+
+function roundFive(num) {
+    return (~~(num*(10**5)))/(10**5);
+}
