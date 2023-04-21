@@ -9,7 +9,11 @@ const screen = document.querySelector('.screen');
 updateDisplay();
 
 function updateDisplay () {
+    if (displayNum === Infinity || displayNum === NaN) {
+        screen.textContent = "You cant do that lol";
+    } else {
     screen.textContent = displayNum;
+    }
 }
 
 btnAC.addEventListener('click',() => {
@@ -159,5 +163,8 @@ btnPercent.addEventListener('click',() => {
 });
 
 function roundFive(num) {
+    if (num === Infinity || num === NaN) {
+        return num;
+    }
     return (~~(num*(10**5)))/(10**5);
 }
